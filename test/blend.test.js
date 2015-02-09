@@ -39,6 +39,26 @@ describe('PNG blending', function() {
             utilities.imageEqualsFile(data, 'test/fixture/results/2.png', done);
         });
     });
+
+    it('2px regression test', function(done) {
+        var tiles = [
+            fs.readFileSync('test/fixture/2px-regress.A.png'),
+            fs.readFileSync('test/fixture/2px-regress.B.png')
+        ];
+
+        blend(tiles, {
+            format: 'png',
+            quality: 4,
+            mode: 'hextree',
+            width: 256,
+            height: 256,
+        }, function(err, data, warnings) {
+            if (err) return done(err);
+            assert.deepEqual(warnings, []);
+            utilities.imageEqualsFile(data, 'test/fixture/results/2px-regress.png', 0, done);
+        });
+
+    })
 });
 
 
