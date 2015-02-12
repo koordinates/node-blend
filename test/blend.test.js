@@ -57,8 +57,29 @@ describe('PNG blending', function() {
             assert.deepEqual(warnings, []);
             utilities.imageEqualsFile(data, 'test/fixture/results/2px-regress.png', 0, done);
         });
+    });
 
-    })
+    it('Small palette encoding regression test', function(done) {
+        var tile = fs.readFileSync('test/fixture/sm-regress.png');
+
+        blend([{
+            'buffer': tile,
+            'tint': {'a': [0, 1]}
+        }], {
+            format: 'png',
+            quality: 256,
+            mode: 'hextree',
+            width: 256,
+            height: 256,
+            reencode: true
+        }, function(err, data, warnings) {
+            if (err) return done(err);
+            if (warnings !== undefined) {
+                assert.deepEqual(warnings, []);
+            }
+            utilities.imageEqualsFile(data, 'test/fixture/results/sm-regress.png', 0, done);
+        });
+    });
 });
 
 
